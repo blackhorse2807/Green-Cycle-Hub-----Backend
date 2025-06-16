@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to Velebitgreen</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .header {
+      background-color: #2e7d32;
+      padding: 20px;
+      text-align: center;
+    }
+    .header img {
+      max-width: 120px;
+      height: auto;
+    }
+    .content {
+      padding: 30px 20px;
+      color: #333333;
+    }
+    .content h1 {
+      margin-top: 0;
+      color: #2e7d32;
+    }
+    .content p {
+      line-height: 1.6;
+    }
+    .footer {
+      background-color: #eeeeee;
+      text-align: center;
+      padding: 15px;
+      font-size: 12px;
+      color: #666666;
+    }
+    .footer a {
+      color: #2e7d32;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="https://d383kuiij66lee.cloudfront.net/sites-image/velebitgreenlogo_white.png" alt="Velebitgreen Logo">
+    </div>
+    <div class="content">
+      <h1>Welcome, {{ name }}!</h1>
+      <p>Thank you for joining <strong>Velebitgreen</strong>—your new one-stop e-commerce marketplace for sustainable plastic recycling solutions.</p>
+      <p>Browse thousands of eco-friendly products, connect with certified recyclers in your area, and turn your plastic waste into value.</p>
+      <p>If you have any questions, reply to this email or reach out to our support team at info@Velebitgreen.com.</p>
+      <p>—<br>The Velebitgreen Team</p>
+    </div>
+    <div class="footer">
+      Velebitgreen Marketplace<br>
+      <a href="{{ unsubscribe_url }}">Unsubscribe</a> |
+      <a href="{{ terms_url }}">Terms &amp; Privacy</a>
+    </div>
+  </div>
+</body>
+</html>

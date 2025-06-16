@@ -1,0 +1,50 @@
+{
+  "name": "backend-code",
+  "version": "1.0.0",
+  "description": "Backend code",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsc -b && node dist/index.js",
+    "postinstall": "npx prisma generate"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.817.0",
+    "@aws-sdk/s3-request-presigner": "^3.817.0",
+    "@prisma/client": "^6.8.2",
+    "@socket.io/redis-adapter": "^8.3.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/next": "^8.0.7",
+    "bcrypt": "^6.0.0",
+    "colorts": "^0.1.63",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "handlebars": "^4.7.8",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.0",
+    "multer-s3": "^3.0.1",
+    "next": "^15.3.3",
+    "nodemailer": "^7.0.3",
+    "pino": "^9.7.0",
+    "pino-pretty": "^13.0.0",
+    "redis": "^5.0.1",
+    "socket.io": "^4.8.1"
+  },
+  "prisma": {
+    "schema": "./prisma/schema.prisma"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/multer": "^1.4.13",
+    "@types/node": "^22.15.19",
+    "@types/nodemailer": "^6.4.17",
+    "nodemon": "^3.1.10",
+    "prisma": "^6.8.2",
+    "typescript": "^5.8.3"
+  }
+}

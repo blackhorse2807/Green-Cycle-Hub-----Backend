@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      background-color: #ffffff;
+      font-family: Arial, sans-serif;
+    }
+    
+    .container {
+      padding: 20px;
+    }
+    .content {
+      max-width: 600px;
+      margin: auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      color: #000000;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 1.0em;
+      font-weight: bold;
+      color: #000000;
+      margin-bottom: 30px;
+    }
+    .details-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .details-table th,
+    .details-table td {
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+      text-align: left;
+      font-size: 0.95em;
+    }
+    .details-table th {
+      background-color: #f7f7f7;
+      font-weight: 600;
+      color: #065f46;
+    }
+    .button {
+      background-color: #22c55e;
+      color: white;
+      padding: 12px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 30px;
+      border-radius: 5px;
+    }
+    .footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      text-align: left;
+      color: #065f46;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="content">
+      <div class="logo">
+        <img src="https://d383kuiij66lee.cloudfront.net/sites-image/velebitgreenlogo_green.png" alt="Company Logo" width="120">
+      </div>
+      <div class="subtitle">Your Product Has Been Approved!</div>
+      <p>Dear {{ userName }},</p>
+      <p>Great news! Your product submission has been approved and is now live on our platform. Below are the details of your approved product:</p>
+      
+      <table class="details-table">
+        <tr>
+          <th>Product Name</th>
+          <td>{{ name }}</td>
+        </tr>
+        <tr>
+          <th>Product ID</th>
+          <td>{{ id }}</td>
+        </tr>
+        <tr>
+          <th>Price</th>
+          <td>{{ price }} {{ currency }}</td>
+        </tr>
+        <tr>
+          <th>Quantity</th>
+          <td>{{ quantity }} {{ unit }}</td>
+        </tr>
+        <tr>
+          <th>Category</th>
+          <td>{{ category }}</td>
+        </tr>
+        <tr>
+          <th>Description</th>
+          <td>{{ description }}</td>
+        </tr>
+        <tr>
+          <th>Additional Notes</th>
+          <td>{{ additionalNotes }}</td>
+        </tr>
+      </table>
+
+      <p>You can view your live product by clicking the button below:</p>
+      <a href="{{ action_url }}" class="button">View Product</a>
+
+      <div class="footer">
+        <p>If you have any questions or need assistance, feel free to reach out to us at:
+          <a href="mailto:info@velebitgreen.com">info@velebitgreen.com</a>
+        </p>
+        <p>Thanks for choosing Velebit Green!<br>The Velebit Green Team</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

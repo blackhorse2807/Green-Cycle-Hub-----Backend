@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      background-color: #ffffff;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      padding: 20px;
+    }
+    .content {
+      max-width: 600px;
+      margin: auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      color: #000000;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 1.0em;
+      font-weight: bold;
+      color: #d11313;;
+      margin-bottom: 30px;
+    }
+    .details-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .details-table th,
+    .details-table td {
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+      text-align: left;
+      font-size: 0.95em;
+    }
+    .details-table th {
+      background-color: #f7f7f7;
+      font-weight: 600;
+      color: #065f46;
+    }
+    .button {
+      background-color: #22c55e;
+      color: white;
+      padding: 12px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 30px;
+      border-radius: 5px;
+    }
+    .footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      text-align: left;
+      color: #065f46;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="content">
+      <div class="logo">
+        <img src="https://d383kuiij66lee.cloudfront.net/sites-image/velebitgreenlogo_green.png" alt="Velebit Green Logo" width="120">
+      </div>
+      <div class="subtitle">Your Product Has Been Rejected</div>
+      <p>Dear {{ userName }},</p>
+      <p>We're sorry to inform you that your product submission has been reviewed and unfortunately <strong>did not meet our guidelines</strong>. Below are the details:</p>
+
+      <table class="details-table">
+        <tr>
+          <th>Product ID</th>
+          <td>{{ productId }}</td>  
+        </tr>
+        <tr>
+          <th>Product Name</th>
+          <td>{{ productName }}</td>
+        </tr>
+        <tr>
+          <th>Status</th>
+          <td>Rejected</td>
+        </tr>
+      </table>
+
+      <p>If you believe this decision was made in error or would like to make revisions and resubmit, please visit your dashboard</p>
+
+      <div class="footer">
+        <p>For any questions or further assistance, feel free to reach out:</p>
+        <p>
+          <a href="mailto:info@velebitgreen.com">info@velebitgreen.com</a>
+        </p>
+        <p>Thank you for being part of Velebit Green.<br>The Velebit Green Team</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

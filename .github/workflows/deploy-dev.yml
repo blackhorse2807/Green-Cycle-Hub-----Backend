@@ -1,0 +1,72 @@
+name: Build and Push velebitgreen-Backend Docker Image and deploy to EC2
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+        
+      #- name: Cache sonarqube
+      #  uses: actions/cache@v4
+      #  with:
+      #    path: ~/.sonar/cache
+      #    key: ${{ runner.os}}-sonar
+
+      #- name: SonarQube Scan
+      #  uses: SonarSource/sonarcloud-github-action@master
+      #  env:
+      #    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        #with:
+        #  projectKey: RPPmain_backend-code
+        #  organization: rpp-sonar-key
+      - name: Prepare Env file
+        run: |
+          echo 'DATABASE_URL="${{ secrets.DATABASE_URL }}"' >> .env
+          echo 'JWT_SECRET="${{ secrets.JWT_SECRET }}"' >> .env
+          echo 'JWT_EXPIRES_IN="1h"' >> .env
+          echo 'AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"' >> .env
+          echo 'AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"' >> .env
+          echo 'AWS_REGION="ap-south-1"' >> .env
+          echo 'S3_BUCKET_MARKETPLACE_IMAGES="${{ secrets.S3_BUCKET_MARKETPLACE_IMAGES }}"' >> .env
+          echo 'S3_BUCKET_USER_DOCUMENTS="${{ secrets.S3_BUCKET_USER_DOCUMENTS }}"' >> .env
+          echo 'CLOUDFRONT_URL="${{ secrets.CLOUDFRONT_URL }}"' >> .env
+          echo 'SMTP_HOST="smtpout.secureserver.net"' >> .env
+          echo 'SMTP_PORT="465"' >> .env
+          echo 'SMTP_SECURE="true"' >> .env
+          echo 'SMTP_USER="info@velebitgreen.com"' >> .env
+          echo 'SMTP_PASS="${{ secrets.SMTP_PASS }}"' >> .env
+
+      - name: Build Docker image and push to GHCR
+        run: |
+          echo "${{ secrets.DOCKER_GHCR_TOKEN }}" | docker login ghcr.io -u tapasrwth --password-stdin
+          #read first line from version.txt and add runner suffix and then rewrite it
+          #echo "v1.0.0-${{ github.run_number }}" > version.txt
+          docker build -t ghcr.io/rppmain/backend:dev-${{ github.run_number }} .
+          docker push ghcr.io/rppmain/backend:dev-${{ github.run_number }}
+      - name: Deploy to EC2
+        env:
+          EC2_KEY: ${{ secrets.EC2_KEY }}
+          EC2_IP:  ${{ vars.EC2_IP }}
+        run: |
+          echo "${{ secrets.EC2_KEY }}" > ec2_key.pem
+          chmod 600 ec2_key.pem
+          ssh -i ec2_key.pem -o StrictHostKeyChecking=no ec2-user@${EC2_IP} << 'EOF'
+            docker rmi -f $(docker images -aq)
+            echo "${{ secrets.DOCKER_GHCR_TOKEN }}" | docker login ghcr.io -u tapasrwth --password-stdin
+            docker pull ghcr.io/rppmain/backend:dev-${{ github.run_number }}
+            docker stop backend || true
+            docker rm backend || true
+            docker run --restart=always -d --name backend -p 8000:8000 ghcr.io/rppmain/backend:dev-${{ github.run_number }}
+          EOF
+      - name: Clean up
+        run: |
+          docker logout ghcr.io
+          docker rmi ghcr.io/rppmain/backend:dev-${{ github.run_number }} || true

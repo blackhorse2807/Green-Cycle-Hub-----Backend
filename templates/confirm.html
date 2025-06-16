@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      background-color: #ffffff;
+      font-family: Arial, sans-serif;
+    }
+    
+    .container {
+      padding: 20px;
+    }
+    .content {
+      max-width: 600px;
+      margin: auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      color: #000000;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 1.0em;
+      font-weight: bold;
+      color: #000000;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .button {
+      background-color: #22c55e;
+      color: white;
+      padding: 12px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 20px;
+      border-radius: 5px;
+    }
+    .footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      text-align: center;
+      color: #065f46;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="content">
+      <div class="logo">
+        <img src="https://d383kuiij66lee.cloudfront.net/sites-image/velebitgreenlogo_green.png" alt="Company Logo" width="120">
+      </div>
+      <div class="subtitle">Confirm your email to get started</div>
+      <p>Dear {{ name }},</p>
+      <p>Thank you for registering with us. We're thrilled to have you on board.</p>
+      <p>To get started, please confirm your email address by clicking on the button below:</p>
+      <a href="{{ confirmUrl }}" class="button">Confirm</a>
+
+      <div class="footer">
+        <p>For any technical assistance, please contact us at: 
+          <a href="mailto:info@velebitgreen.com">info@velebitgreen.com</a>
+        <p>Best regards,<br>The Velebit Green Team</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
