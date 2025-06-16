@@ -5,5 +5,4 @@ generated
 startapp.sh
 stopapp.sh
 dist/
-Dockerfile.dev
 .DS_Store
