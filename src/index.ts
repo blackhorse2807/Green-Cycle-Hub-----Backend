@@ -25,13 +25,10 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-  origin: [
-    'https://www.velebitgreen.com',
+  origin: ['https://green-cycle-hub-frontend.onrender.com',
     'http://localhost:3000',
     'http://localhost:3001',
-    'https://velebitgreen.com',
-    'https://admin.velebitgreen.com'
-  ],
+  ], 
   credentials: true,
   methods: ['GET','POST','PUT','DELETE','OPTIONS'],
   allowedHeaders: ['Content-Type','Authorization', 'x-frontend-type']
