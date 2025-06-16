@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Backend code",
   "main": "index.js",
-
   "scripts": {
     "build": "tsc -b",
     "dev": "tsc -b && node dist/index.js",
@@ -38,7 +37,8 @@
     "socket.io": "^4.8.1"
   },
   "prisma": {
-    "schema": "./prisma/schema.prisma"
+    "schema": "./prisma/schema.prisma",
+    "seed": "ts-node prisma/seed.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -48,6 +48,7 @@
     "@types/nodemailer": "^6.4.17",
     "nodemon": "^3.1.10",
     "prisma": "^6.8.2",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }
 }
