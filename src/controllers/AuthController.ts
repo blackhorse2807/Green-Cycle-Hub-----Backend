@@ -51,7 +51,7 @@ export default class AuthController {
           countryCode: countryCode || undefined,
           phoneNumber: phoneNumber || undefined,
           role: $Enums.UserRole.USER,
-          isEmailVerified: true,
+          isEmailVerified: false,
         },
       });
 
@@ -67,12 +67,12 @@ export default class AuthController {
       //   context: { name: user.name },
       // });
 
-      // await sendConfirmationEmail({
-      //   to: user.email,
-      //   subject: "Confirm your email address | VelebitGreen",
-      //   template: "confirm",
-      //   context: { name: user.name},
-      // }, token);
+      await sendConfirmationEmail({
+        to: user.email,
+        subject: "Confirm your email address | VelebitGreen",
+        template: "confirm",
+        context: { name: user.name},
+      }, token);
 
       // 7) Return the user object (excluding password)
       return res.status(201).json({
