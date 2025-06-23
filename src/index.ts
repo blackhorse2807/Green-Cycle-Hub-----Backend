@@ -26,7 +26,7 @@ const app = express();
 app.use(express.json());
 app.use(cors({
   origin: ['https://green-cycle-hub-frontend.vercel.app',
-    'https://green-cycle-hub-admin.vercel.app',
+    'https://green-cycle-hub-admin.vercel.app/login',
     'http://localhost:3000',
     'http://localhost:3001',
   ], 
