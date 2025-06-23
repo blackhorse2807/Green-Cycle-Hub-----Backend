@@ -26,9 +26,10 @@ const app = express();
 app.use(express.json());
 app.use(cors({
   origin: ['https://green-cycle-hub-frontend.vercel.app',
-    'https://green-cycle-hub-admin.vercel.app/login',
+    'https://green-cycle-hub-admin.vercel.app',
     'http://localhost:3000',
     'http://localhost:3001',
+    '*',
   ], 
   credentials: true,
   methods: ['GET','POST','PUT','DELETE','OPTIONS'],
