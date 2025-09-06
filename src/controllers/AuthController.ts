@@ -4,7 +4,8 @@ import { Request, Response } from "express";
 import { PrismaClient, $Enums } from "../../generated/prisma";
 import bcrypt from "bcrypt";
 import { signToken } from "../lib/jwt";
-import { sendConfirmationEmail, sendEmail } from "../lib/email";
+// Import the direct SendGrid email service
+import { sendConfirmationEmail, sendEmail } from "../lib/directSendgrid";
 import logger from '../logger';
 
 const prisma = new PrismaClient();
@@ -67,12 +68,18 @@ export default class AuthController {
       //   context: { name: user.name },
       // });
 
+      try {
       await sendConfirmationEmail({
         to: user.email,
-        subject: "Confirm your email address | VelebitGreen",
+          subject: "Confirm your email address | EcoFind",
         template: "confirm",
         context: { name: user.name},
       }, token);
+      } catch (emailError) {
+        // Log the error but continue with signup process
+        logger.error("Failed to send confirmation email:", emailError);
+        // We'll still create the user but note that email wasn't sent
+      }
 
       // 7) Return the user object (excluding password)
       return res.status(201).json({
@@ -479,12 +486,19 @@ export default class AuthController {
 
       // 6) Respond with success message
       logger.info("Password changed successfully for user:", user.id);
-      sendEmail({
+      
+      try {
+        await sendEmail({
         to: user.email,
         subject: "Password Changed Successfully",
         template: "password",
         context: { userName: user.name, changeDate: new Date().toLocaleString() },
       });
+      } catch (emailError) {
+        // Log the error but continue with password change process
+        logger.error("Failed to send password change email:", emailError);
+      }
+      
       res.json({ message: "Password changed successfully" });
     } catch (e) {
       logger.error("Change password error:", e);

@@ -5,6 +5,7 @@ import { s3 } from "../utils/s3Client";
 import { PrismaClient } from "../../generated/prisma";
 import { auth } from "../middleware/auth";
 import { imageUpload, docUpload } from "../middleware/uploadMiddleware";
+import logger from "../logger";
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -33,18 +34,27 @@ router.post(
       const originalName = req.file.originalname.replace(/\s+/g, "_");
       const key = `profile-pics/${userId}_${timestamp}_${originalName}`;
 
-      // 1) Upload to S3
-      await s3.send(
-        new PutObjectCommand({
-          Bucket: process.env.S3_BUCKET_MARKETPLACE_IMAGES!,
-          Key: key,
-          Body: req.file.buffer,
-          ContentType: req.file.mimetype,
-        })
-      );
+      // 1) Upload to S3 using bucket name from environment variables
+      const bucketName = process.env.S3_BUCKET_MARKETPLACE_IMAGES || "myawsbucketodoo-1";
+      const region = process.env.AWS_REGION || "ap-south-1";
+      
+      try {
+        await s3.send(
+          new PutObjectCommand({
+            Bucket: bucketName,
+            Key: key,
+            Body: req.file.buffer,
+            ContentType: req.file.mimetype,
+          })
+        );
+        logger.info(`Successfully uploaded profile pic to S3: ${key}`);
+      } catch (uploadError) {
+        logger.error("S3 upload error details:", uploadError);
+        throw uploadError;
+      }
 
-      // 2) Build the public URL via CloudFront
-      const url = `${CLOUD_FRONT_URL}/${key}`;
+      // 2) Build the public URL
+      const url = `https://${bucketName}.s3.${region}.amazonaws.com/${key}`;
 
       // 3) Persist it with Prisma (uncomment if you have a profileImage field on User)
       // await prisma.user.update({
@@ -98,21 +108,28 @@ router.post(
         return res.status(400).json({ error: "No files provided" });
       }
 
-      const bucket = process.env.S3_BUCKET_MARKETPLACE_IMAGES!;
+      const bucketName = process.env.S3_BUCKET_MARKETPLACE_IMAGES || "myawsbucketodoo-1";
+      const region = process.env.AWS_REGION || "ap-south-1";
+      
       const uploadPromises = files.map(async (file, index) => {
         const key = `seller/${userId}/${productId}/images/${index}.jpg`;
-        // const key = `product-images/${productId}_${Date.now()}_${file.originalname}`;
-        await s3.send(
-          new PutObjectCommand({
-            Bucket: bucket,
-            Key: key,
-            Body: file.buffer,
-            ContentType: file.mimetype,
-          })
-        );
-        console.log('Uploaded to S3:', key);
-        // return `https://${bucket}.s3.${region}.amazonaws.com/${key}`;
-        return `${process.env.CLOUDFRONT_URL}/${key}`;
+        
+        try {
+          await s3.send(
+            new PutObjectCommand({
+              Bucket: bucketName,
+              Key: key,
+              Body: file.buffer,
+              ContentType: file.mimetype,
+            })
+          );
+          logger.info(`Successfully uploaded product image to S3: ${key}`);
+        } catch (uploadError) {
+          logger.error("S3 upload error details:", uploadError);
+          throw uploadError;
+        }
+        
+        return `https://${bucketName}.s3.${region}.amazonaws.com/${key}`;
       });
 
       const urls = await Promise.all(uploadPromises);
@@ -157,20 +174,29 @@ router.post(
       const originalName = req.file.originalname.replace(/\s+/g, "_");
       console.log(originalName)
       const key = `verification-docs/${userId}/${timestamp}_${originalName}`;
-      console.log(key)
+      console.log("key", key)
 
-      // 1) Upload to S3
-      await s3.send(
-        new PutObjectCommand({
-          Bucket: process.env.S3_BUCKET_USER_DOCUMENTS!,
-          Key: key,
-          Body: req.file.buffer,
-          ContentType: req.file.mimetype,
-        })
-      );
+      // 1) Upload to S3 using bucket name from environment variables
+      const bucketName = process.env.S3_BUCKET_USER_DOCUMENTS || "myawsbucketodoo-1";
+      const region = process.env.AWS_REGION || "ap-south-1";
+      
+      try {
+        await s3.send(
+          new PutObjectCommand({
+            Bucket: bucketName,
+            Key: key,
+            Body: req.file.buffer,
+            ContentType: req.file.mimetype,
+          })
+        );
+        logger.info(`Successfully uploaded document to S3: ${key}`);
+      } catch (uploadError) {
+        logger.error("S3 upload error details:", uploadError);
+        throw uploadError;
+      }
 
-      // 2) Build the public URL via CloudFront
-      const url = `https://${process.env.S3_BUCKET_USER_DOCUMENTS}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
+      // 2) Build the public URL for the document
+      const url = `https://${bucketName}.s3.${region}.amazonaws.com/${key}`;
       console.log(url)
 
       // 3) Update or create the Seller record

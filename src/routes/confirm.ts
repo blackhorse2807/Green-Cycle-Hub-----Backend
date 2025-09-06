@@ -4,7 +4,7 @@ import express from 'express';
 import { Request, Response } from 'express';
 import { PrismaClient } from "../../generated/prisma";
 import { verifyToken } from '../lib/jwt';
-import { sendEmail } from '../lib/email';
+import { sendEmail } from '../lib/directSendgrid';
 
 const prisma = new PrismaClient();
 

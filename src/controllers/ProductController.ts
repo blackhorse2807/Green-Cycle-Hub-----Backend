@@ -8,7 +8,7 @@ import {
   NotificationType,
 } from "../../generated/prisma";
 import { verifyToken } from "../lib/jwt";
-import { sendEmail } from "../lib/email";
+import { sendEmail } from "../lib/directSendgrid";
 import { FRONTEND_URL } from "../constants/apiConstants";
 import logger from "../logger";
 
